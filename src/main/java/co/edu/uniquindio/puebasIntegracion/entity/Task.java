@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 public class Task {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -12,6 +13,9 @@ public class Task {
     private boolean completed;
     @ManyToOne
     private User assignedUser;
+    @ManyToOne
+    private Project project;
+
 
     public Long getId() {
         return id;
@@ -43,5 +47,13 @@ public class Task {
 
     public void setAssignedUser(User assignedUser) {
         this.assignedUser = assignedUser;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }

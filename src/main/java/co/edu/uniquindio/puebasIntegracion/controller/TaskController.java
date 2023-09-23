@@ -14,11 +14,13 @@ import java.util.List;
 public class TaskController {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
+    private final ProjectRepository projectRepository;
 
     @Autowired
-    public TaskController(TaskRepository taskRepository, UserRepository userRepository) {
+    public TaskController(TaskRepository taskRepository, UserRepository userRepository, ProjectRepository projectRepository) {
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
+        this.projectRepository = projectRepository;
     }
 
     @GetMapping
@@ -40,6 +42,22 @@ public class TaskController {
 
         if (task != null && user != null) {
             task.setAssignedUser(user);
+            taskRepository.save(task);
+            return new ResponseEntity<>(task, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/assign/{taskId}/{projectId}")
+    public ResponseEntity<Task> assignTaskToProject(
+            @PathVariable Long taskId, @PathVariable Long projectId) {
+
+        Task task = taskRepository.findById(taskId).orElse(null);
+        Project project = projectRepository.findById(projectId).orElse(null);
+
+        if (task != null && project != null) {
+            task.setProject(project);
             taskRepository.save(task);
             return new ResponseEntity<>(task, HttpStatus.OK);
         } else {
