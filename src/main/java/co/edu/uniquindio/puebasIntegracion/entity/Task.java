@@ -10,6 +10,8 @@ public class Task {
     private Long id;
     private String title;
     private boolean completed;
+    @ManyToOne
+    private User assignedUser;
 
     public Long getId() {
         return id;
@@ -33,5 +35,13 @@ public class Task {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public User getAssignedUser() {
+        return assignedUser;
+    }
+
+    public void setAssignedUser(User assignedUser) {
+        this.assignedUser = assignedUser;
     }
 }
